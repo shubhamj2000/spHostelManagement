@@ -34,5 +34,19 @@ namespace spHostelManagement.Models
         [DataType(DataType.Date)]
         public System.DateTime DOB { get; set; }
 
+        
+
+        public int GenderID { get; set; }
+
+        public spGenderModel gender { get; set; }
+        
+        public List<spGenderModel> Genders { get; set; }
+
+        public string Name  { get; set; }   
+
+        public bool isDeleted { get; set; }
+
+        public bool isActive   { get; set; }    
+
     }
 }

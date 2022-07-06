@@ -24,7 +24,10 @@ namespace spHostelManagement.Controllers
         
         public ActionResult AddStudent()
         {
-            return View();
+            spStudentRepository StdRepo = new spStudentRepository();
+            var model = new spStudentModel();
+            model.Genders=StdRepo.GetAllGenders();
+            return View(model);
         }
 
            
@@ -42,23 +45,26 @@ namespace spHostelManagement.Controllers
                         ViewBag.Message = "Student details added successfully";
                     }
                 }
-
-                return View();
+                return RedirectToAction("GetAllStdDetails");
+                //return View();
             }
             catch
             {
-                return View();
+                return RedirectToAction("GetAllStdDetails");
+               //return View();
             }
+            return RedirectToAction("GetAllStdDetails");
+
         }
 
         
         public ActionResult EditStdDetails(int id)
         {
             spStudentRepository StdRepo = new spStudentRepository();
+            var model = StdRepo.GetAllStudents().Find(Std => Std.Id == id);
+            model.Genders = StdRepo.GetAllGenders();
 
-
-
-            return View(StdRepo.GetAllStudents().Find(Std => Std.Id == id));
+            return View(model);
 
         }
 

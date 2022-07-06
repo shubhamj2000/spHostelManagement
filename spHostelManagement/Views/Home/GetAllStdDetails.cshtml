@@ -1,9 +1,25 @@
 ﻿@model IEnumerable<spHostelManagement.Models.spStudentModel>
 
+<head>
+
+    <script src="https://kit.fontawesome.com/6ff5753400.js" crossorigin="anonymous"></script>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+</head>
+
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "AddStudent")
 </p>
-<table class="table">
+
+<table class="table" id="students">
+
+    <thead>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.FirstName)
@@ -20,9 +36,22 @@
         <th>
             @Html.DisplayNameFor(model => model.DOB)
         </th>
-        <th></th>
+        <th>
+            State
+        </th>
+        <th>
+            Gender
+        </th>
+        <th>
+            Edit
+            </th>
+          <th>
+              Delete
+            </th>
     </tr>
+        </thead>
 
+    <tbody>
 @foreach (var item in Model) {
     <tr>
         <td>
@@ -41,11 +70,44 @@
             @Html.DisplayFor(modelItem => item.DOB)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @if(item.isActive) { 
+             <h5>Active</h5>
+            }
+            else{
+            <h5>inActive </h5>
+                     }
+        </td>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditStdDetails", new { id=item.Id }) 
+         </td>
+          <td>
+            @Html.ActionLink("Delete", "DeleteStd", new { id=item.Id })
         </td>
     </tr>
 }
+        </tbody>
+
 
 </table>
+
+<script>
+
+     $(document).ready(function () {
+        $("#students").DataTable({
+            "bJQueryUI": true,
+            "ordering": true,
+            "bSort": false,
+            "bPaginate": true,
+            "sPaginationType": "full_numbers",
+            "iDisplayLength": 10
+        });
+        $('#students').removeClass('display').addClass('table table-striped table-bordered');
+
+
+   
+
+    });
+</script>

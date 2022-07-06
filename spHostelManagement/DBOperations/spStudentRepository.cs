@@ -32,7 +32,10 @@ namespace spHostelManagement.DBOperations
             com.Parameters.AddWithValue("@Email", obj.Email);
             com.Parameters.AddWithValue("@Address", obj.Address);
             com.Parameters.AddWithValue("@DOB", obj.DOB);
-
+            com.Parameters.AddWithValue("@GenderID", obj.GenderID);
+            com.Parameters.AddWithValue("@isActive", obj.isActive);
+            com.Parameters.AddWithValue("@isDeleted", obj.isDeleted);
+            
             con.Open();
             int i = com.ExecuteNonQuery();
             con.Close();
@@ -79,13 +82,47 @@ namespace spHostelManagement.DBOperations
                         LastName = Convert.ToString(dr["LastName"]),
                         Email = Convert.ToString(dr["Email"]),
                         Address = Convert.ToString(dr["Address"]),
-                        DOB = Convert.ToDateTime(dr["DOB"])
+                        DOB = Convert.ToDateTime(dr["DOB"]),
+                        isActive = Convert.ToBoolean(dr["isActive"]),
+                        Name=Convert.ToString(dr["Name"])
                     }
                     );
             }
 
             return StdList;
         }
+
+
+        public List<spGenderModel> GetAllGenders() {
+            connection();
+            List<spGenderModel> genlist=new List<spGenderModel>();
+            SqlCommand com = new SqlCommand("GetGenders", con);
+            com.CommandType = CommandType.StoredProcedure;
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataTable dt = new DataTable();
+
+            con.Open();
+            da.Fill(dt);
+            con.Close();
+            foreach (DataRow dr in dt.Rows)
+            {
+
+                genlist.Add(
+
+                    new spGenderModel()
+                    {
+
+                        id = Convert.ToInt32(dr["id"]),
+                        Name = Convert.ToString(dr["Name"])                     
+                    }
+                    );
+            }
+
+            return genlist;
+
+        }
+
+
         //To Update Student details    
         public bool UpdateStudent(spStudentModel obj)
         {
@@ -100,6 +137,9 @@ namespace spHostelManagement.DBOperations
             com.Parameters.AddWithValue("@Email", obj.Email);
             com.Parameters.AddWithValue("@Address", obj.Address);
             com.Parameters.AddWithValue("@DOB", obj.DOB);
+            com.Parameters.AddWithValue("@GenderID", obj.GenderID);
+            com.Parameters.AddWithValue("@isActive", obj.isActive);
+            com.Parameters.AddWithValue("@isDeleted", obj.isDeleted);
             con.Open();
             int i = com.ExecuteNonQuery();
             con.Close();
