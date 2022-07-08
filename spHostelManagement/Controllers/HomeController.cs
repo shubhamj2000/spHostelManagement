@@ -27,7 +27,7 @@ namespace spHostelManagement.Controllers
             spStudentRepository StdRepo = new spStudentRepository();
             var model = new spStudentModel();
             model.Genders=StdRepo.GetAllGenders();
-            return View(model);
+            return PartialView("_Create",model);
         }
 
            
@@ -64,7 +64,7 @@ namespace spHostelManagement.Controllers
             var model = StdRepo.GetAllStudents().Find(Std => Std.Id == id);
             model.Genders = StdRepo.GetAllGenders();
 
-            return View(model);
+            return PartialView("_Details",model);
 
         }
 
@@ -82,7 +82,7 @@ namespace spHostelManagement.Controllers
             }
             catch
             {
-                return View();
+                return RedirectToAction("GetAllStdDetails");
             }
         }
 

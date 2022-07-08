@@ -1,115 +1,211 @@
 ﻿@model IEnumerable<spHostelManagement.Models.spStudentModel>
+@{
+    ViewBag.Title = "GetAllStdDetails";
+}
+
+<h2>GetAllStdDetails</h2>
+
+
 
 <head>
-
     <script src="https://kit.fontawesome.com/6ff5753400.js" crossorigin="anonymous"></script>
-    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
     <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <link href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
-
 </head>
 
 <p>
-    @Html.ActionLink("Create New", "AddStudent")
+    @*@Html.ActionLink("Create New", "AddStudent")*@
+    <button type="button" class="btn btn-primary" onclick="CreateData()">Create</button>
+
 </p>
 
 <table class="table" id="students">
 
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DOB)
-        </th>
-        <th>
-            State
-        </th>
-        <th>
-            Gender
-        </th>
-        <th>
-            Edit
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
             </th>
-          <th>
-              Delete
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
             </th>
-    </tr>
-        </thead>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DOB)
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                Gender
+            </th>
+          
+            <th>
+                Delete
+            </th>
+        </tr>
+    </thead>
 
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DOB)
-        </td>
-        <td>
-            @if(item.isActive) { 
-             <h5>Active</h5>
-            }
-            else{
-            <h5>inActive </h5>
-                     }
-        </td>
-        <td>
-            @item.Name
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditStdDetails", new { id=item.Id }) 
-         </td>
-          <td>
-            @Html.ActionLink("Delete", "DeleteStd", new { id=item.Id })
-        </td>
-    </tr>
-}
-        </tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a onclick="GetData(@item.Id)" class="anchorDetail">  @Html.DisplayFor(modelItem => item.FirstName)  </a>
+                
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DOB)
+                </td>
+                <td>
+                    @if (item.isActive)
+                    {
+                        <h5>Active</h5>
+                    }
+                    else
+                    {
+                        <h5>inActive </h5>
+                    }
+                </td>
+                <td>
+                    @item.Name
+                </td>
+    
+                <td>
+                    @Html.ActionLink("Delete", "DeleteStd", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
 
 
 </table>
 
+
+<div id='CreateModal' class='modal'>
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h3 class="modal-title" id="myModalLabel">Create Student</h3>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div id='CreateModalContent'></div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog ">
+        <div class="modal-content  ">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Student Information</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">×</button>
+
+                @* ERROR**  data-bs-dismiss instead of data-dismi *@
+
+            </div>
+
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
 <script>
 
-     $(document).ready(function () {
+    $(document).ready(function () {
         $("#students").DataTable({
-            "bJQueryUI": true,
+            "bJQueryUI": false,
             "ordering": true,
             "bSort": false,
             "bPaginate": true,
             "sPaginationType": "full_numbers",
             "aLengthMenu": [[5, 10, 25, 50, 100, 200], [5, 10, 25, 50, 100, 200]],
             "iDisplayLength": 5
-            
+
         });
         $('#students').removeClass('display').addClass('table table-striped table-bordered');
 
 
-   
+
+
 
     });
+
+
+    function CreateData() {
+
+        $.ajax({
+            type: "GET",
+            url: "/Home/AddStudent",
+            success: function (data) {
+                $('#CreateModalContent').html(data);
+                //$('#myModal').modal(options);
+                $('#CreateModal').fadeIn(800);
+                $('#CreateModal').modal('show');
+
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            },
+        });
+    }
+
+
+
+
+
+
+    function GetData(id) {
+        $.ajax({
+            type: "GET",
+            url: "/Home/EditStdDetails",
+            data: { "Id": id },
+            success: function (data) {
+                debugger;
+                $('#myModalContent').html(data);
+                //$('#myModal').modal(options);
+                $('#myModal').fadeIn(800);
+                $('#myModal').modal('show');
+
+            },
+            error: function () {
+                alert("Dynamic content load failed.");
+            },
+
+
+        });
+    }
+
+
+
+
 </script>

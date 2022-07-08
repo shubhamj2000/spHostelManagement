@@ -165,9 +165,9 @@
     <None Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\AddStudent.cshtml" />
+    <Content Include="Views\Shared\_Create.cshtml" />
+    <Content Include="Views\Shared\_Details.cshtml" />
     <Content Include="Views\Home\GetAllStdDetails.cshtml" />
-    <Content Include="Views\Home\EditStdDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

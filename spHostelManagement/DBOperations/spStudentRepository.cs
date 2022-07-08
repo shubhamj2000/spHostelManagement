@@ -140,7 +140,6 @@ namespace spHostelManagement.DBOperations
             com.Parameters.AddWithValue("@GenderID", obj.GenderID);
             com.Parameters.AddWithValue("@isActive", obj.isActive);
             com.Parameters.AddWithValue("@isDeleted", obj.isDeleted);
-            com.Parameters.AddWithValue("@Name", obj.Name);
             con.Open();
             int i = com.ExecuteNonQuery();
             con.Close();
