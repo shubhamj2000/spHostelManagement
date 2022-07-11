@@ -108,6 +108,19 @@ namespace spHostelManagement.Controllers
 
 
 
+        public bool MultipleDelete(int[] multidelete)
+        {
+            if(multidelete==null)
+                return false;
+
+            spStudentRepository StdRepo = new spStudentRepository();
+
+            
+                var a = StdRepo.checkboxdelete(multidelete);
+                TempData["multipleDeleteSuccessful"] = "data added";
+                return a;
+         
+        }
 
 
 

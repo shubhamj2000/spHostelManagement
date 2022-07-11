@@ -178,5 +178,36 @@ namespace spHostelManagement.DBOperations
         }
 
 
+        public bool checkboxdelete(int[] Id)
+        {
+      
+
+           String str= string.Join(",", Id);
+
+            connection();
+            SqlCommand com = new SqlCommand("MultipleDelete", con);
+
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@str", str);
+
+            con.Open();
+            int i = com.ExecuteNonQuery();
+            con.Close();
+            if (i >= 1)
+            {
+                return true;
+            }
+            else
+            {
+
+                return false;
+            }
+
+          
+        }
+
+
+
+
     }
 }

@@ -17,7 +17,7 @@
 <p>
     @*@Html.ActionLink("Create New", "AddStudent")*@
     <button type="button" class="btn btn-primary" onclick="CreateData()">Create</button>
-
+    <button type="button" id="btnsubmit" class="btn btn-danger">Delete All</button>
 </p>
 
 <table class="table" id="students">
@@ -45,9 +45,13 @@
             <th>
                 Gender
             </th>
-          
+
             <th>
                 Delete
+            </th>
+            <th>
+                Select All
+                <input type="checkbox" id="checkBoxAll" />
             </th>
         </tr>
     </thead>
@@ -55,10 +59,11 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="row-select">
+                <input type="hidden" name="name" class="check" value="@item.Id"/>
                 <td>
                     <a onclick="GetData(@item.Id)" class="anchorDetail">  @Html.DisplayFor(modelItem => item.FirstName)  </a>
-                
+
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
@@ -85,10 +90,19 @@
                 <td>
                     @item.Name
                 </td>
-    
+
                 <td>
-                    @Html.ActionLink("Delete", "DeleteStd", new { id = item.Id })
+
+                    <a href="@Url.Action("DeleteStd", "Home",new { id = item.Id })">
+                        <i class="fa-solid fa-trash-can"></i>
+
+                    </a>
                 </td>
+
+                <td>
+                    <input type="checkbox" name="studentIdtoDelete" class="studentIdtoDeletes" value="@item.Id" />
+                </td>
+
             </tr>
         }
     </tbody>
@@ -155,9 +169,71 @@
 
 
 
+        $('#checkBoxAll').click(function () {
+            if ($(this).is(":checked"))
+                $('.studentIdtoDeletes').prop('checked', true);
+            else
+                $('.studentIdtoDeletes').prop('checked', false);
+        });
+
+
 
 
     });
+
+
+
+
+    $("#btnsubmit").click(function () {
+
+        var res = new Array();
+        $('.row-select input:checked').each(function () {
+            var id;
+            id = $(this).closest('tr').find('.check').val();
+
+
+            res.push(id);
+            console.log(res);
+        });
+
+
+        $.ajax({
+            type: "post",
+            url: "/Home/MultipleDelete",
+            data: { 'multidelete': res },
+            success: function (m) {
+
+                console.log(typeof m);
+                if (m == "False") {
+
+                    swal("Error deleting!", "Please try again", "error");
+
+
+                }
+                else {
+                    swal("Deleted!", "Data Deleted", "success");
+                    window.setTimeout(function () {
+                        window.location.href = '/home/GetAllStdDetails/';
+                    }, 3000);
+
+                    //  window.location.href = '/home/getallrecords/'
+
+                }
+
+
+            },
+            error: function () {
+                alert("Dynamic content load failed");
+            },
+        }
+        );
+
+
+    });
+
+
+
+
 
 
     function CreateData() {
@@ -204,6 +280,9 @@
 
         });
     }
+
+
+
 
 
 
